@@ -4,15 +4,15 @@ using Xunit;
 
 namespace ParkingLot.Tests
 {
-    public class ParkingLotTests
+    public class ParkingLotTestsBilka
     {
         readonly IParkingLot lot;
         readonly TestClock clock;
 
-        public ParkingLotTests()
+        public ParkingLotTestsBilka()
         {
             clock = new TestClock();
-            lot = new ParkingLot(clock);
+            lot = new ParkingLot(clock, 20m, TimeSpan.FromMinutes(30), TimeSpan.Zero);
             Gates.Reset();
         }
 
@@ -76,11 +76,11 @@ namespace ParkingLot.Tests
             clock.Forward(TimeSpan.FromMilliseconds(1));
             lot.BeginCheckout("AB 12 123");
 
-            Assert.Equal(15m, lot.GetRemainingFee("AB 12 123"));
+            Assert.Equal(20m, lot.GetRemainingFee("AB 12 123"));
         }
 
         [Fact]
-        public void Owes5WhenPaid10()
+        public void Owes10WhenPaid10()
         {
             lot.Checkin("AB 12 123");
             clock.Forward(TimeSpan.FromMilliseconds(1));
@@ -88,7 +88,7 @@ namespace ParkingLot.Tests
 
             lot.Pay("AB 12 123", 10m);
 
-            Assert.Equal(5m, lot.GetRemainingFee("AB 12 123"));
+            Assert.Equal(10m, lot.GetRemainingFee("AB 12 123"));
         }
 
         [Fact]
@@ -137,7 +137,7 @@ namespace ParkingLot.Tests
             lot.Pay("AB 12 123", 10m);
             lot.Pay("AB 12 123", 50m);
 
-            Assert.Equal(-45m, lot.GetRemainingFee("AB 12 123"));
+            Assert.Equal(-40m, lot.GetRemainingFee("AB 12 123"));
             lot.Leave("AB 12 123");
 
             Assert.Equal(0, Gates.NumberOfCars);
@@ -166,26 +166,36 @@ namespace ParkingLot.Tests
         }
 
         [Fact]
-        public void ItCosts30ToPark24Minutes()
+        public void ItCosts20ToPark24Minutes()
         {
             lot.Checkin("AB 12 123");
 
             clock.Forward(TimeSpan.FromMinutes(24));
             lot.BeginCheckout("AB 12 123");
 
-            Assert.Equal(30m, lot.GetRemainingFee("AB 12 123"));
+            Assert.Equal(20m, lot.GetRemainingFee("AB 12 123"));
         }
 
         [Fact]
-        public void ItCosts30ToPark30Minutes()
+        public void ItCosts20ToPark30Minutes()
         {
-            // Opgave: lav test
+            lot.Checkin("AB 12 123");
+
+            clock.Forward(TimeSpan.FromMinutes(30));
+            lot.BeginCheckout("AB 12 123");
+
+            Assert.Equal(20m, lot.GetRemainingFee("AB 12 123"));
         }
 
         [Fact]
-        public void ItCosts45ToPark30MinutesAnd1Ms()
+        public void ItCosts40ToPark30MinutesAnd1Ms()
         {
-            // Opgave: lav test
+            lot.Checkin("AB 12 123");
+
+            clock.Forward(TimeSpan.FromMinutes(30) + TimeSpan.FromMilliseconds(1));
+            lot.BeginCheckout("AB 12 123");
+
+            Assert.Equal(40m, lot.GetRemainingFee("AB 12 123"));
         }
     }
 }
