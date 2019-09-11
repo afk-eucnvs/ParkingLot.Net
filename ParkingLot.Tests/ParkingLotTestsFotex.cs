@@ -116,12 +116,12 @@ namespace ParkingLot.Tests
         [Fact]
         public void CanLeaveWhenFeeIsPayed()
         {
-            lot.Checkin("AB 12 123");
-            lot.BeginCheckout("AB 12 123");
+            lot.Checkin("AB 12 125");
+            lot.BeginCheckout("AB 12 125");
 
-            lot.Pay("AB 12 123", 40m);
+            lot.Pay("AB 12 125", 40m);
 
-            lot.Leave("AB 12 123");
+            lot.Leave("AB 12 125");
 
             Assert.Equal(0, Gates.NumberOfCars);
         }
