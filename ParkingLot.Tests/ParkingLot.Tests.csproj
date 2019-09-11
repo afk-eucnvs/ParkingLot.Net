@@ -15,5 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ParkingLot\ParkingLot.csproj" />
     <ProjectReference Include="..\ParkingLot.Fotex\ParkingLot.Fotex.csproj" />
+    <ProjectReference Include="..\ParkingLot.Bilka\ParkingLot.Bilka.csproj" />
+    <ProjectReference Include="..\ParkingLot.Fakta\ParkingLot.Fakta.csproj" />
+    <ProjectReference Include="..\ParkingLot.Netto\ParkingLot.Netto.csproj" />
   </ItemGroup>
 </Project>
